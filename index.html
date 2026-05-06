@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MP3</title>
+  <title>MP3 Player</title>
+
   <style>
     html, body {
       margin: 0;
@@ -13,26 +14,31 @@
       color: white;
       overflow: hidden;
     }
+
     #container {
       display: flex;
       height: 100vh;
       width: 100vw;
     }
+
     #player {
       flex: 3;
       position: relative;
     }
+
     #playlist {
       flex: 1;
       background: #111;
       overflow-y: auto;
       padding: 10px;
     }
+
     #playlist ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
+
     #playlist li {
       display: flex;
       align-items: center;
@@ -40,24 +46,29 @@
       cursor: pointer;
       border-bottom: 1px solid #222;
     }
+
     #playlist li:hover {
       background: #222;
     }
+
     #playlist li.active {
       background: #333;
       font-weight: bold;
     }
+
     #playlist img {
       width: 80px;
       height: 45px;
       object-fit: cover;
       margin-right: 10px;
     }
+
     #playlist span {
       flex: 1;
     }
   </style>
 </head>
+
 <body>
   <div id="container">
     <div id="player"></div>
@@ -65,59 +76,60 @@
       <ul id="videoList"></ul>
     </div>
   </div>
+
   <script src="https://www.youtube.com/iframe_api"></script>
+
   <script>
     const playlist = [
       { id: "ml6H7LEjoaE", title: "Pola - Pola Meets Lyrica" },
       { id: "qKKVHhQvS9k", title: "신세계에서 踊りましょう" },
       { id: "eOLHh_HtvkM", title: "탄산 빠진 멜로디" },
-      { id: "9uVHfqFKXZk", title: " 내가 사랑한 시이나링고 플레이리스트" },
-      { id: "O9-sNEpslmY", title: " ナイトバースト " },
-      { id: "ahC50Z9gnVY", title: " 空夜coo:ya - 上弦の月 [Full EP] " },
-      { id: "9bOLS12iosg", title: " CECIL - Cheek (EP, 2001) " },
-      { id: "BaFB1-y_BkQ", title: " The Pastels – A Bit On The Side (1992) " },
-      { id: "ao7ghqQtY0g", title: " Girls Be - フレンチ大作戦 [The French Operation]  " },
-      { id: "DmxkoaPW23w", title: " ときめきトゥナイトED full  " },
-      { id: "WcvCeOhGyC0", title: " 지우개로 지운 수요일  " },
-      { id: "c9nhQIfBSm4", title: " [playlist] 사랑의 병  " },
-      { id: "wNZoEh7D-9o", title: " さよならを教えて　流れとよどみ " },
-      { id: "bVhoOoxRTOQ", title: " 月島瑠璃子 " },
-      { id: "o2jUXitsa8E", title: " Calm PC-98 Chiptunes 🌸 Soft Retro VN Music for Study " },
-      { id: "pgOOS93bUbE", title: " brestgirl." },
-      { id: "5yK8Ct4_ZJM", title: " waga." },
-      { id: "elCZi0ED_zA", title: " NM - Rain Of April " },
-      { id: "Hhag41dnNZA", title: " ǂ‡ǂ‡ǂ‡ǂ‡ǂ‡ǂ‡ǂ‡ǂ‡ǂ‡ǂ " },
-      { id: "onxKm9oG7GQ", title: " Houston [EXTENDED] - We Love Katamari OST " },
-      { id: "ltu4YYKn4C8", title: " killer7 - Rave Off→Rave On " },
-      { id: "rgUmjgXEltA", title: " きのこ帝国「夜が明けたら」[Full 2nd demo]  " },
-      { id: "F8MPGM7QtD8", title: " Love Dream [愛の夢] " },
-      { id: "AIteM940dEo", title: " Sea-Salted Plum   " },
-      { id: "1Wa3Zfz_0eQ", title: " cold hallway  " },
-      { id: "7K_4t0bmoqY", title: "  SnPLO - Pin-Pic - BB   " },
-      { id: "iumztC_-TZM", title: " さよならを教えて OP 【高音質】  " },
-      { id: "NRZsxFUimQw", title: " たぶん高音質版 escape  " },
-      { id: "eCilEI6H8SM", title: " [reset・fripSide] escapeメドレー [short version]  " },
-      { id: "KJY1TomgkBs", title: " Hirasawa Susumu - Run  " },
-      { id: "D4cRtYybjjA", title: " 02. Kinjirareta Asobi (禁じられた遊び) - Rozen Maiden Piano Sound Album " },
-      { id: "IDwbHeR0UYc", title: " Ellie Goulding - Guns And Horses  " },
-      { id: "qhPLK1Tn1GQ", title: " Shishido Kavka - Love Corrida  " },
-      { id: "1EKTw50Uf8M", title: " ポリスマン／GAL男宣言 " },
-      { id: "MDulSkBuJOo", title: " IIRIS - Tigerhead " },
-      { id: "vV8HE0KTaxU", title: " イキグサレ　「お注射ガール」 " },
-      { id: "DmK6bPt0bE", title:  " BUTTERFLY" TOWA TEI WITH AYUMI TANABE & VIVIEN SESSOMS  " },
-      { id: "6OVRR_SQggc", title: " Soft PC-98 RPG/VN Music  " },
-      { id: "HoZCoq6Ch2I", title: " OTOMEROID｜TW jumpscare " },
-      { id: "mYHZhaLsZI4", title: " "GBI" TOWA TEI  " },
-      { id: "lbAv3_OUWvQ", title: " Ouragan · Poison Girl Friend  " },
-      { id: "DfcWOPpmw14", title: " Magdalena Bay - Image  " },
-      { id: "6WJZF3QZTZE", title: " KALT - The Father I Technics SL1200MK7 I Cambridge Audio Alva MC  " },
-      { id: "DfcWOPpmw14", title: " Magdalena Bay - Image  " },
-      { id: "ZsO6wo9_ilA", title: " äöü - om.age1 " },
-      { id: "ocujus8RGjA", title: " স্কাইব্লক " },
-      { id: "4wfuK_AbZiQ", title: " SLUMLORDZ ~ SANDWICH  " },
-      { id: "y5DM8XJPWII", title: " Fatidic - The Garden of Devotion (2023)  " }
-      
+      { id: "9uVHfqFKXZk", title: "내가 사랑한 시이나링고 플레이리스트" },
+      { id: "O9-sNEpslmY", title: "ナイトバースト" },
+      { id: "ahC50Z9gnVY", title: "空夜coo:ya - 上弦の月 [Full EP]" },
+      { id: "9bOLS12iosg", title: "CECIL - Cheek (EP, 2001)" },
+      { id: "BaFB1-y_BkQ", title: "The Pastels – A Bit On The Side (1992)" },
+      { id: "ao7ghqQtY0g", title: "Girls Be - フレンチ大作戦" },
+      { id: "DmxkoaPW23w", title: "ときめきトゥナイト ED full" },
+      { id: "WcvCeOhGyC0", title: "지우개로 지운 수요일" },
+      { id: "c9nhQIfBSm4", title: "[playlist] 사랑의 병" },
+      { id: "wNZoEh7D-9o", title: "さよならを教えて" },
+      { id: "bVhoOoxRTOQ", title: "月島瑠璃子" },
+      { id: "o2jUXitsa8E", title: "Calm PC-98 Chiptunes" },
+      { id: "pgOOS93bUbE", title: "brestgirl." },
+      { id: "5yK8Ct4_ZJM", title: "waga." },
+      { id: "elCZi0ED_zA", title: "NM - Rain Of April" },
+      { id: "onxKm9oG7GQ", title: "We Love Katamari OST" },
+      { id: "ltu4YYKn4C8", title: "killer7 - Rave Off→Rave On" },
+      { id: "rgUmjgXEltA", title: "きのこ帝国 - 夜が明けたら" },
+      { id: "F8MPGM7QtD8", title: "Love Dream" },
+      { id: "AIteM940dEo", title: "Sea-Salted Plum" },
+      { id: "1Wa3Zfz_0eQ", title: "cold hallway" },
+      { id: "7K_4t0bmoqY", title: "SnPLO - Pin-Pic - BB" },
+      { id: "iumztC_-TZM", title: "さよならを教えて OP" },
+      { id: "NRZsxFUimQw", title: "escape" },
+      { id: "eCilEI6H8SM", title: "escapeメドレー" },
+      { id: "KJY1TomgkBs", title: "Hirasawa Susumu - Run" },
+      { id: "D4cRtYybjjA", title: "禁じられた遊び" },
+      { id: "IDwbHeR0UYc", title: "Ellie Goulding - Guns And Horses" },
+      { id: "qhPLK1Tn1GQ", title: "Shishido Kavka - Love Corrida" },
+      { id: "1EKTw50Uf8M", title: "ポリスマン／GAL男宣言" },
+      { id: "MDulSkBuJOo", title: "IIRIS - Tigerhead" },
+      { id: "vV8HE0KTaxU", title: "お注射ガール" },
+
+      { id: "DmK6bPt0bE", title: "BUTTERFLY - TOWA TEI" },
+      { id: "6OVRR_SQggc", title: "Soft PC-98 RPG/VN Music" },
+      { id: "HoZCoq6Ch2I", title: "OTOMEROID｜TW jumpscare" },
+      { id: "mYHZhaLsZI4", title: "GBI - TOWA TEI" },
+
+      { id: "lbAv3_OUWvQ", title: "Ouragan · Poison Girl Friend" },
+      { id: "DfcWOPpmw14", title: "Magdalena Bay - Image" },
+      { id: "ZsO6wo9_ilA", title: "äöü - om.age1" },
+      { id: "ocujus8RGjA", title: "স্কাইব্লক" },
+      { id: "4wfuK_AbZiQ", title: "SLUMLORDZ ~ SANDWICH" },
+      { id: "y5DM8XJPWII", title: "Fatidic - The Garden of Devotion (2023)" }
     ];
+
     let player;
     let currentIndex = 0;
 
@@ -136,24 +148,28 @@
           onStateChange: onPlayerStateChange
         }
       });
+
       buildPlaylistUI();
     }
 
     function buildPlaylistUI() {
       const ul = document.getElementById("videoList");
-      ul.innerHTML = ""; // Clear if rebuilding
+      ul.innerHTML = "";
+
       playlist.forEach((video, index) => {
         const li = document.createElement("li");
 
         const img = document.createElement("img");
         img.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
-        li.appendChild(img);
 
         const span = document.createElement("span");
         span.textContent = video.title;
+
+        li.appendChild(img);
         li.appendChild(span);
 
         li.onclick = () => playVideo(index);
+
         if (index === currentIndex) li.classList.add("active");
 
         ul.appendChild(li);
@@ -167,17 +183,21 @@
     }
 
     function updateActive() {
-      const lis = document.querySelectorAll("#videoList li");
-      lis.forEach((li, idx) => li.classList.toggle("active", idx === currentIndex));
+      document.querySelectorAll("#videoList li")
+        .forEach((li, idx) => {
+          li.classList.toggle("active", idx === currentIndex);
+        });
     }
 
     function onPlayerStateChange(event) {
+      console.log("Player state:", event.data);
+
       if (event.data === YT.PlayerState.ENDED) {
-        currentIndex++;
-        if (currentIndex < playlist.length) {
+        setTimeout(() => {
+          currentIndex = (currentIndex + 1) % playlist.length;
           player.loadVideoById(playlist[currentIndex].id);
           updateActive();
-        }
+        }, 500);
       }
     }
   </script>
