@@ -161,7 +161,8 @@
     let player;
     let currentIndex = 0;
 
-    function onYouTubeIframeAPIReady() {
+    window.onYouTubeIframeAPIReady = function () {
+
       player = new YT.Player('player', {
         width: '100%',
         height: '100%',
@@ -178,7 +179,7 @@
       });
 
       buildPlaylistUI();
-    }
+    };
 
     function buildPlaylistUI() {
       const ul = document.getElementById("videoList");
